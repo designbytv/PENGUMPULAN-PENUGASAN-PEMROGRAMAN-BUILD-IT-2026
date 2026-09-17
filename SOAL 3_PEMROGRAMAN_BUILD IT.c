@@ -1,0 +1,47 @@
+#include <stdio.h>
+
+#define MOD 1000000007LL
+
+int compare(const void *a, const void *b) {
+    long long arg1 = *(const long long *)a;
+    long long arg2 = *(const long long *)b;
+    if (arg1 < arg2) return -1;
+    if (arg1 > arg2) return 1;
+    return 0;
+}
+
+long long A[1000005];
+
+int main() {
+    int N;
+    if (scanf("%d", &N) != 1) return 0;
+
+    for (int i = 0; i < N; i++) {
+        scanf("%lld", &A[i]);
+    }
+
+    qsort(A, N, sizeof(long long), compare);
+
+    long long total_pairs = ((long long)N * (N - 1)) / 2;
+
+    long long same_pairs = 0;
+    long long count = 1;
+
+    for (int i = 1; i < N; i++) {
+        if (A[i] == A[i - 1]) {
+            count++;
+        } else {
+            same_pairs += (count * (count - 1)) / 2;
+            count = 1;
+        }
+    }
+    
+    same_pairs += (count * (count - 1)) / 2;
+
+    long long ans = (total_pairs - same_pairs) % MOD;
+    if (ans < 0) ans += MOD;
+
+    printf("%lld\n", ans);
+
+    return 0;
+}
